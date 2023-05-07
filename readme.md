@@ -7,15 +7,15 @@ Three open datasets from Kaggle used in experiments .
 
 	Bitcoin Dataset:
 		https://www.kaggle.com/datasets/shiheyingzhe/bitcoin-transaction-data-from-2009-to-2018
-		https://userscloud.com/
+		https://userscloud.com/o5c2ze7q8r6x
 		
 	Thruster Dataset:
 		https://www.kaggle.com/datasets/patrickfleith/spacecraft-thruster-firing-tests-dataset
-		https://userscloud.com/
+		https://userscloud.com/ksr34v7bp0a8
 		
 	Taxi Dataset:
 		https://www.kaggle.com/datasets/sunnets/taxipredictiondata8m
-		https://userscloud.com/
+		https://userscloud.com/nnhoo9jd81if
 
 
 
