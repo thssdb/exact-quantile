@@ -1,0 +1,86 @@
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+public class MainForGCBuffer {
+    int N = 80000000;
+    final long KK = 47, num_mask = 65536;
+    final static int com = 6708;
+
+    long seed;
+    Random random = new Random(233);
+    private long nextLong(){
+        seed ^= (seed << 21);
+        seed ^= (seed >>> 35);
+        seed ^= (seed << 4);
+        return seed;
+    }
+    private void reset(){seed=2333L;random.setSeed(233);}
+    private long nextNumber(long x, int i) {
+        long num=x;
+        num=x&262143;
+//        num^=1L<<63;
+//        num = (x&127)+128;
+//        if(Math.abs(nextLong())%10000<=4500)
+//            num = nextLong();
+        return num;
+    }
+    public void test1(){
+//        System.out.println("   start mem:"+1.0*(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024);
+        EclipseCollectionsHashMapForQuantile worker = new EclipseCollectionsHashMapForQuantile(64,16);
+        reset();
+        Random random = new Random(233);
+        for(int i=1;i<=N;i++) {
+            long num=nextLong(),freq=/*Math.abs(nextLong())%23+*/1;
+            num = nextNumber(num,i);
+            worker.insert(num, freq);
+        }
+        List<Long> result = worker.findResultIndex(N/2, N/4);
+//        System.out.println("\t\t\t\t"+result.toString());
+//        System.out.println(hashMap.DEBUG);
+//        System.out.println(hashMap.getRemainingBits());
+//        System.out.println("   end mem:"+1.0*(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024);
+    }
+    public void test2(){
+//        System.out.println("   start mem:"+1.0*(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024);
+        GCHashMapBufferForQuantile worker = new GCHashMapBufferForQuantile(64,16);
+        reset();
+        Random random = new Random(233);
+        for(int i=1;i<=N;i++) {
+            long num=nextLong(),freq=/*Math.abs(nextLong())%23+*/1;
+            num = nextNumber(num,i);
+            worker.add(num);
+        }
+        List<Long> result = worker.findResultIndex(N/2, N/4);
+//        System.out.println("\t\t\t\t"+result.toString());
+//        System.out.println(hashMap.DEBUG);
+//        System.out.println(hashMap.getRemainingBits());
+//        System.out.println("   end mem:"+1.0*(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024);
+    }
+
+    public static void main(String[] args) {
+
+        int TEST_CASE = 5, sum;
+        long START_TIME = new Date().getTime();
+
+
+        sum=0;
+        for(int i=0;i<TEST_CASE;i++) {
+            START_TIME = new Date().getTime();
+            MainForGCBuffer main = new MainForGCBuffer();
+            main.test2();
+            sum+=(new Date().getTime() - START_TIME);
+        }
+        System.out.println("gc buffer: "+sum/TEST_CASE+"ms");
+
+
+        sum=0;
+        for(int i=0;i<TEST_CASE;i++) {
+            START_TIME = new Date().getTime();
+            MainForGCBuffer main = new MainForGCBuffer();
+            main.test1();
+            sum+=(new Date().getTime() - START_TIME);
+        }
+        System.out.println("gc: "+sum/TEST_CASE+"ms");
+    }
+}
